@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import mailchimp_marketing as MailchimpMarketing
 from mailchimp_marketing.api_client import ApiClientError
-from pydantic import BaseSettings
+from pydantic import BaseSettings, BaseModel
 
 
 class Settings(BaseSettings):
@@ -19,15 +19,20 @@ def read_root():
     return {"Hello": "World"}
 
 
+class Item(BaseModel):
+    email_address: str
+
+
 @app.post("/subscribe")
-async def subscribe(email_address: str):
+async def subscribe(data: Item):
     """
     important! if user was permanently deleted (not archived or not unsubscribed) this will not work!
     user will have to manually fill the form at http://eepurl.com/bhD_0r
-    :param email_address:
+    :param data:
     :return:
     """
     try:
+        email_address = data.email_address
         client = MailchimpMarketing.Client()
         client.set_config(
             {
