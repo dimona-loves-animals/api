@@ -1,0 +1,6 @@
+.dockerignore
+Dockerfile
+LICENSE
+README.md
+.pre-commit-config.yaml
+requirements-dev.txt

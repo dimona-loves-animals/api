@@ -1,0 +1,13 @@
+version: '3.2'
+
+services:
+  api:
+    restart: unless-stopped
+    build: .
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-dla.rule=Host(`api.dimonalovesanimals.org`)"
+      - "traefik.http.routers.api-dla.entrypoints=websecure"
+      - "traefik.http.routers.api-dla.tls.certresolver=myresolver"
